@@ -16,13 +16,13 @@ class TestBayesRegression(unittest.TestCase):
     def test_prior(self):
         result = prior(self.alpha)
         self.assertIsInstance(result, multivariate_normal_frozen)
-        self.assertEqual(result.mean.all(), np.zeros(2).all())
-        self.assertEqual(result.cov.all(), (1/self.alpha) * np.eye(2).all())
+        self.assertTrue(np.allclose(result.mean, np.zeros(2)))
+        self.assertTrue(np.allclose(result.cov, (1/self.alpha) * np.eye(2)))
 
         # Test that it works with a different alpha
         result_alpha = prior(5.0)
-        self.assertEqual(result_alpha.mean.all(), np.zeros(2).all())
-        self.assertEqual(result_alpha.cov.all(), (1/5.0) * np.eye(2).all())
+        self.assertTrue(np.allclose(result_alpha.mean, np.zeros(2)))
+        self.assertTrue(np.allclose(result_alpha.cov, (1/5.0) * np.eye(2)))
 
     def test__posterior(self):
         
@@ -36,15 +36,15 @@ class TestBayesRegression(unittest.TestCase):
         m_n = self.beta * S_n @ self.phi.T @ self.t
 
         # Test that they equal
-        self.assertEqual(result[0].all(), m_n.all())
-        self.assertEqual(result[1].all(), S_n.all())
+        self.assertTrue(np.allclose(result[0], m_n))
+        self.assertTrue(np.allclose(result[1], S_n))
 
         # Test that it works with a different alpha and beta
-        result_alpha_beta = _posterior(self.phi, self.t, alpha = 5.0, beta = 10.0)
-        m_n_alpha_beta = 10.0 * S_n @ self.phi.T @ self.t
-        S_n_alpha_beta = np.linalg.inv(5.0 * np.eye(2) + 10.0 * self.phi.T @ self.phi)
-        self.assertEqual(m_n_alpha_beta.all(), result_alpha_beta[0].all())
-        self.assertEqual(S_n_alpha_beta.all(), result_alpha_beta[1].all())
+        result_alpha_beta = _posterior(self.phi, self.t, alpha = 3.3, beta = 7.8)
+        S_n_alpha_beta = np.linalg.inv(3.3 * np.eye(2) + 7.8 * self.phi.T @ self.phi)
+        m_n_alpha_beta = 7.8 * S_n_alpha_beta @ self.phi.T @ self.t
+        self.assertTrue(np.allclose(m_n_alpha_beta, result_alpha_beta[0]))
+        self.assertTrue(np.allclose(S_n_alpha_beta, result_alpha_beta[1]))
 
         
     def test_posterior(self):
@@ -52,14 +52,14 @@ class TestBayesRegression(unittest.TestCase):
         result = posterior(self.phi, self.t, self.alpha, self.beta)
 
         self.assertIsInstance(result, multivariate_normal_frozen)
-        self.assertEqual(result.mean.all(), m_n.all())
-        self.assertEqual(result.cov.all(), S_n.all())
+        self.assertTrue(np.allclose(result.mean, m_n))
+        self.assertTrue(np.allclose(result.cov, S_n))
 
     def test_phi(self):
         x = [1.0,2,3,4]
-        expected = np.array([[1.0, 1.0, 1.0, 1.0], [1.0, 2, 3, 4]])
+        expected = np.array([[1.0, 1.0, 1.0, 1.0], [1.0, 2, 3, 4]]).T
         result = phi(x)
-        self.assertEqual(result.all(), expected.all())
+        self.assertTrue(np.allclose(result, expected))
 
     def test_loglikelihood(self):
         w = np.array([1.0, 2])
