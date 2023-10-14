@@ -53,7 +53,7 @@ namespace BayesRegressorTests
             beta = 5.0;
             t = Vector<double>.Build.DenseOfArray(new double[] { 1.0, 2, 3, 4 });
             x = Vector<double>.Build.DenseOfArray(new double[] { 1.0, 2, 3, 4 });
-            phi = Matrix<double>.Build.DenseOfArray(new double[,] { { 1.0, 2 }, { 1.0, 3 }, { 1.0, 4 }, { 1.0, 5 } });
+            phi = Matrix<double>.Build.DenseOfArray(new double[,] { { 1.0, 1.0 }, { 1.0, 2 }, { 1.0, 3 }, { 1.0, 4 } });
         }
 
         [Fact]
@@ -92,6 +92,24 @@ namespace BayesRegressorTests
             // Needs precision
             TestUtilities.AssertArraysAlmostEqual(result_alpha_beta.Mean, m_n_alpha_beta.ToArray(), 1e-10);
             TestUtilities.AssertMatriciesAlmostEqual(result_alpha_beta.Covariance, S_n_alpha_beta.ToArray(), 1e-10);
+        }
+
+        [Fact]
+        public void TestLogLikelihood()
+        {
+            Vector<double> w = Vector<double>.Build.DenseOfArray(new double[] { 1.0, 2 });
+            double result = BayesRegressor.LogLikelihood(w, phi, t, beta);
+
+            double E_d = 0.5 * (t - phi * w).PointwisePower(2).Sum();
+            double expected = (4 / 2) * (Math.Log(beta) - Math.Log(2 * Math.PI)) - beta * E_d;
+
+            Assert.Equal(result, expected);  // 5 is the precision (number of decimal places)
+
+            // Test that it works with a different beta. Use differences in loglikelihoods
+            double result_beta = BayesRegressor.LogLikelihood(w, phi, t, 10.0);
+            double expected_differences = (4 / 2) * (Math.Log(5) - Math.Log(10.0)) - (5 - 10.0) * E_d;
+
+            Assert.Equal(expected_differences, result - result_beta, 5);  // 5 is the precision (number of decimal places)
         }
 
         // Test the test utilities

@@ -27,6 +27,22 @@ namespace BayesRegression {
             var m_n = S_n * (phi.Transpose() * t) * beta;
             return new MultivariateNormalDistribution(m_n.ToArray(), S_n.ToArray());
         }
-    }
 
+        public static Matrix<double> Phi(Vector<double> x)
+        {
+            int N = x.Count;
+            var ones = Vector<double>.Build.Dense(N, 1.0);
+            var stackedMatrix = Matrix<double>.Build.DenseOfColumnVectors(ones, x);
+            return stackedMatrix.Transpose();
+        }
+
+        public static double LogLikelihood(Vector<double> w, Matrix<double> phi, Vector<double> t, double beta = 1.0)
+        {
+            int N = phi.RowCount;
+            var difference = t - phi * w;
+            double E_d = 0.5 * difference.DotProduct(difference);
+            double ll = (N / 2.0) * (Math.Log(beta) - Math.Log(2 * Math.PI)) - beta * E_d;
+            return ll;
+        }
+    }
 }
