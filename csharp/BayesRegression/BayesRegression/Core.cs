@@ -11,6 +11,7 @@ namespace BayesRegression {
         {
             double[] m_0 = Vector<double>.Build.Dense(2, 0).ToArray();
             double[,] S_0 = (Matrix<double>.Build.DenseIdentity(2) / alpha).ToArray();
+
             // The MvNormal type doesn't seem to support the specialise Matrix types, so we convert to arrays
             return new MultivariateNormalDistribution(m_0, S_0);
         }
@@ -33,7 +34,7 @@ namespace BayesRegression {
             int N = x.Count;
             var ones = Vector<double>.Build.Dense(N, 1.0);
             var stackedMatrix = Matrix<double>.Build.DenseOfColumnVectors(ones, x);
-            return stackedMatrix.Transpose();
+            return stackedMatrix;
         }
 
         public static double LogLikelihood(Vector<double> w, Matrix<double> phi, Vector<double> t, double beta = 1.0)
