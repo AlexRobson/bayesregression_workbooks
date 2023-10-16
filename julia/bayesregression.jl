@@ -126,9 +126,9 @@ end
 (x,y, w_star) = generate_data(20; w = [-0.3, 0.5])
 p = plot_bayesian_linear_regression(x, y, w_star; α = 2, β = (1/0.2)^2)
 
-#plot(p..., layout = (5, 3), size = (1200, 600))
+f = plot(p..., layout = (5, 3), size = (1200, 600))
 
-savefig("bayesplot.png")
+savefig(f, "bayesplot.png")
 
 
 
