@@ -14,3 +14,15 @@ f = br.plotting.plot_bayesian_linear_regression(data.x, data.y, data.w, alpha = 
 
 f.savefig('bayesplot.png')
 ```
+
+The example uses generated data similar to that produced within the text of the book.
+However, if custom data was to be used, the relevant data tuple needs to be created in leiu of
+`utils.generate_data`. However, at present the plots are fixed to w_i = [-1, 1] for the distributions
+over the weights. 
+
+```
+Data = namedtuple('data', ['x', 'y', 'w'])
+    return Data(x = x, y = y, w = w)
+```
+
+
