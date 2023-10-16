@@ -35,7 +35,6 @@ def plot_bayesian_linear_regression(x, t, w_star, alpha = 1.0, beta = 1.0):
     
     fig, axs = plt.subplots(5, 3, figsize = (1200 / 100, 600 / 100))
     
-    
     p_prior = np.array([prior(alpha = alpha).pdf(w) for w in W_grid]).reshape(len(W), len(W));
     for (row, ndata) in enumerate([1, 2, 5, len(x)]):
         _x, _y = x[:ndata], t[:ndata]
