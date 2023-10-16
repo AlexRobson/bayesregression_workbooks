@@ -6,7 +6,12 @@ namespace BayesRegression {
 
     public class BayesRegressor
     {
-        // P(w | alpha)
+        // 
+        /// <summary>
+        /// Returns a MultivariateNormalDistribution object representing the prior distribution P(w | alpha) over the weights.
+        /// <param> alpha: The precision parameter for the prior.  </param>
+        /// </summary>
+        /// <returns> A MultivariateNormalDistribution object </returns>
         public static MultivariateNormalDistribution Prior(double alpha)
         {
             double[] m_0 = Vector<double>.Build.Dense(2, 0).ToArray();
@@ -17,6 +22,13 @@ namespace BayesRegression {
         }
 
         // P(w | t, alpha, beta)
+        /// <summary>
+        /// Returns a MultivariateNormalDistribution object representing the posterior distribution P(w | t, alpha, beta) over the weights.
+        /// <param> phi: The design matrix </param>
+        /// <param> t: The target values </param>
+        /// <param> alpha: The precision parameter for the prior. Default 1.0 </param>
+        /// <param> beta: The precision parameter for the likelihood. Default 1.0 </param>
+        /// </summary>
         public static MultivariateNormalDistribution Posterior(Matrix<double> phi, Vector<double> t, double alpha = 1.0, double beta = 1.0)
         {
             int D = 2;
@@ -29,6 +41,10 @@ namespace BayesRegression {
             return new MultivariateNormalDistribution(m_n.ToArray(), S_n.ToArray());
         }
 
+        /// <summary>
+        /// Returns the design matrix for a given vector of x values. Simply concatenates a column of ones to the x values.
+        /// <param> x: The vector of x values </param>
+        /// </summary>
         public static Matrix<double> Phi(Vector<double> x)
         {
             int N = x.Count;
@@ -37,6 +53,13 @@ namespace BayesRegression {
             return stackedMatrix;
         }
 
+        /// <summary>
+        /// Returns the log likelihood of the data given the weights and the precision parameter beta.
+        /// <param> w: The weights </param>
+        /// <param> phi: The design matrix </param>
+        /// <param> t: The target values </param>
+        /// <param> beta: The precision parameter for the likelihood. Default 1.0 </param>
+        /// </summary>
         public static double LogLikelihood(Vector<double> w, Matrix<double> phi, Vector<double> t, double beta = 1.0)
         {
             int N = phi.RowCount;

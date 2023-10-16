@@ -8,11 +8,11 @@ public static class Plotting {
 
     /// <BayesPlot>
     /// Generates the Figure 3.7 plot from Bishop's Pattern Recognition and Machine Learning. Creates a MultiPlot.bmp file in the current directory.
+    /// Note parameter ranges outside of -1 to 1 may cause issues with the plotting.
     /// </BayesPlot>
     /// <param name="data">The Data Tuple as specified in Utilities.Data containing fields x, t and w </param>
-    /// <param name="w_star">The second number to add.</param>
-    /// <param name="alpha">The second number to add.</param>
-    /// <param name="beta">The second number to add.</param>
+    /// <param name="alpha">alpha: The precision parameter for the prior. See Bishop for details. </param>
+    /// <param name="beta">beta: The precision parameter for the likelihood. See Bishop for details. </param>
     public static void BayesPlot(Data data, double alpha, double beta) {
 
         double [] x = data.x;
