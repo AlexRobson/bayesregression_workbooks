@@ -3,7 +3,7 @@ Bayesian linear regression in python.
 This reproduces Figure 3.7 in Pattern Recognition and Machine Learning by Chris Bishop. 
 The code snippet below will reproduce the selected Figure. See the text for details. 
 
-![Figure 3.7](bayesplot.png "Bayes Plot")
+![Figure 3.7](./images/bayesplot.png "Bayes Plot")
 
 
 ```
